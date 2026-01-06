@@ -7,7 +7,7 @@ export const IncomeEventSchema = z.object({
     date: z.date(),
     source: z.string().min(1, "Source is required"),
     reliability: z.enum(['certain', 'likely', 'uncertain']),
-    isReceived: z.boolean().default(false),
+    isReceived: z.boolean().optional().default(false),
 });
 export type IncomeEvent = z.infer<typeof IncomeEventSchema>;
 
