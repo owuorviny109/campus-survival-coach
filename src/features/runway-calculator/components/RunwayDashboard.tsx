@@ -1,5 +1,6 @@
 import { useRunwayCalculation } from '../hooks';
 import { Card, CardHeader, CardTitle, CardContent } from '../../../components/ui/card';
+import { FinancialManager } from './FinancialManager';
 import { cn } from '../../../lib/utils';
 import { format } from 'date-fns';
 
@@ -87,6 +88,9 @@ export function RunwayDashboard() {
                 </Card>
             </div>
 
+            {/* Financial Management Tools */}
+            <FinancialManager />
+
             {/* Actionable Insight */}
             <div className={cn("p-4 rounded-lg border", statusColors[status])}>
                 <div className="flex gap-2">
@@ -97,6 +101,6 @@ export function RunwayDashboard() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
