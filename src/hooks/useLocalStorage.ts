@@ -67,6 +67,8 @@ export function useLocalStorage<T>(
             // Save to local storage
             if (typeof window !== 'undefined') {
                 window.localStorage.setItem(key, JSON.stringify(valueToStore));
+                // Dispatch a custom event so other hooks in the SAME tab update
+                window.dispatchEvent(new Event('local-storage'));
             }
         } catch (error) {
             console.error(`LocalStorage Write Error for key "${key}":`, error);
@@ -74,24 +76,45 @@ export function useLocalStorage<T>(
         }
     }, [key, storedValue]);
 
-    // Listen for changes from other tabs/windows
+    // Listen for changes from other tabs AND the same tab
     useEffect(() => {
-        const handleStorageChange = (e: StorageEvent) => {
-            if (e.key === key && e.newValue) {
-                try {
-                    const parsed = JSON.parse(e.newValue);
-                    const result = schema.safeParse(parsed);
-                    if (result.success) {
-                        setStoredValue(result.data);
-                    }
-                } catch (error) {
-                    // Ignore parse errors from other tabs
+        const handleStorageChange = (e: Event) => {
+            // If it's a real StorageEvent (other tab)
+            if (e instanceof StorageEvent) {
+                if (e.key === key && e.newValue) {
+                    updateState(e.newValue);
                 }
+                return;
+            }
+
+            // If it's our custom event (same tab)
+            // We have to read from localStorage directly
+            const rawValue = window.localStorage.getItem(key);
+            if (rawValue) {
+                updateState(rawValue);
             }
         };
 
+        const updateState = (rawValue: string) => {
+            try {
+                const parsed = JSON.parse(rawValue);
+                const result = schema.safeParse(parsed);
+                if (result.success) {
+                    // Check if value actually changed to avoid tight loop, though React handles this well
+                    setStoredValue(result.data);
+                }
+            } catch (error) {
+                // Ignore parse errors from other tabs
+            }
+        }
+
         window.addEventListener('storage', handleStorageChange);
-        return () => window.removeEventListener('storage', handleStorageChange);
+        window.addEventListener('local-storage', handleStorageChange);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+            window.removeEventListener('local-storage', handleStorageChange);
+        };
     }, [key, schema]);
 
     return [storedValue, setValue, error];
