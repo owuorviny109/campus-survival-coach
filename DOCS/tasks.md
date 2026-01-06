@@ -6,39 +6,39 @@ This implementation plan creates a React + TypeScript web application that helps
 
 ## Tasks
 
-- [ ] 1. Project Setup and Core Infrastructure
+- [x] 1. Project Setup and Core Infrastructure
   - Create React + TypeScript project with Vite
   - Set up ESLint, Prettier, and testing framework (Vitest + fast-check)
   - Configure Tailwind CSS for styling
   - Set up project structure and basic routing
   - _Requirements: 5.5_
 
-- [ ] 2. Core Data Models and Types
-  - [ ] 2.1 Define TypeScript interfaces for all data models
+- [x] 2. Core Data Models and Types
+  - [x] 2.1 Define TypeScript interfaces for all data models
     - Create StudentProfile, IncomeEvent, CampusContext, and SurvivalTip interfaces
     - Define RunwayResult and TradeOffComparison types
     - Set up validation schemas using Zod
     - _Requirements: 1.1, 2.1, 3.1, 4.1_
 
-  - [ ] 2.2 Write property test for data model validation
+  - [x] 2.2 Write property test for data model validation
     - **Property 1: Data Model Consistency**
     - **Validates: Requirements 1.1, 2.1**
 
-- [ ] 3. Financial Runway Calculator
-  - [ ] 3.1 Implement core runway calculation logic
+- [x] 3. Financial Runway Calculator
+  - [x] 3.1 Implement core runway calculation logic
     - Create RunwayCalculator class with calculateRunway method
     - Handle irregular income patterns and fixed expenses
     - Calculate safe daily spend and broke date projections
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5_
 
-  - [ ] 3.2 Write property tests for runway calculations
+  - [x] 3.2 Write property tests for runway calculations
     - **Property 1: Runway Calculation Accuracy**
     - **Property 2: Safe Daily Spend Calculation**
     - **Property 3: Broke Date Warning Generation**
     - **Property 4: Irregular Income Handling**
-    - **Validates: Requirements 1.1, 1.2, 1.3, 1.4, 1.5**
+    - **Validates: Requirements 1.1, 1.2, 1.3, 1.4, 1.5_**
 
-  - [ ] 3.3 Write unit tests for edge cases
+  - [x] 3.3 Write unit tests for edge cases
     - Test zero balance scenarios
     - Test very high expense scenarios
     - Test invalid input handling
