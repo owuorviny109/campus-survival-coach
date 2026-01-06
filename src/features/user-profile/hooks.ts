@@ -19,7 +19,7 @@ export function useStudentProfile() {
     const createProfile = (data: Omit<StudentProfile, 'id' | 'createdAt' | 'lastUpdated'>) => {
         const newProfile: StudentProfile = {
             ...data,
-            id: crypto.randomUUID(), // Native browser UUID
+            id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `user-${Date.now()}`,
             createdAt: new Date(),
             lastUpdated: new Date()
         };

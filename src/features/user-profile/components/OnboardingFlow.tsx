@@ -32,15 +32,28 @@ export function OnboardingFlow() {
     };
 
     const handleSubmit = () => {
-        createProfile({
-            name,
-            campusType,
-            livingArrangement,
-            foodHabits,
-            transportPattern,
-            currentBalance,
-            cheapestMealCost: cheapestMeal
-        });
+        try {
+            console.log("Submitting Profile...");
+
+            const profileData = {
+                name: name || 'Student', // Fallback
+                campusType,
+                livingArrangement,
+                foodHabits,
+                transportPattern,
+                currentBalance: Number(currentBalance) || 0,
+                cheapestMealCost: Number(cheapestMeal) || 50
+            };
+
+            console.log("Data to create:", profileData);
+            createProfile(profileData);
+            console.log("Profile created successfully in LocalStorage");
+
+            // Should trigger App re-render automatically via useLocalStorage event
+        } catch (e) {
+            console.error("Error creating profile:", e);
+            alert("Error creating profile. Please check console.");
+        }
     };
 
     // Step Content Logic
@@ -87,8 +100,8 @@ export function OnboardingFlow() {
                                         key={opt.id}
                                         onClick={() => setLivingArrangement(opt.id as LivingArrangement)}
                                         className={`p-3 rounded-lg border text-left transition-all ${livingArrangement === opt.id
-                                                ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200'
-                                                : 'border-slate-200 hover:bg-slate-50'
+                                            ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200'
+                                            : 'border-slate-200 hover:bg-slate-50'
                                             }`}
                                     >
                                         {opt.label}
