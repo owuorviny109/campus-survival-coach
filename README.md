@@ -118,7 +118,7 @@ See our detailed [implementation plan](tasks.md) for complete roadmap.
   - Student-friendly interface and language
   - Fast, intuitive user experience
 
-## 🚀 Quick Start
+## Quick Start
 
 <!-- TODO: Update when implementation is complete -->
 
@@ -144,7 +144,7 @@ npm test
 npm run build
 ```
 
-## 📱 Usage Examples
+## Usage Examples
 
 <!-- TODO: Add actual screenshots when UI is complete -->
 
@@ -174,54 +174,9 @@ Option B: Off-campus (8,000 KSh) + Daily Matatu (200 KSh)
 - Walk when possible, save matatu for essentials"
 ```
 
-## 🤝 Contributing
+ 
 
-We welcome contributions! This is a hackathon project, but we maintain professional standards.
-
-### Development Guidelines
-
-1. **Follow our [commit conventions](COMMIT_CONVENTIONS.md)**
-2. **Write tests for new features**
-3. **Ensure mobile responsiveness**
-4. **Maintain TypeScript type safety**
-
-### Getting Started
-
-```bash
-# Fork the repo and clone your fork
-git clone https://github.com/YOUR_USERNAME/campus-survival-coach.git
-
-# Create a feature branch
-git checkout -b feat/your-feature-name
-
-# Make your changes and commit
-git commit -m "feat(scope): add your feature"
-
-# Push and create a pull request
-git push origin feat/your-feature-name
-```
-
-## 📊 Project Structure
-
-```
-campus-survival-coach/
-├── DOCS/                          # Project documentation
-│   ├── requirements.md            # Feature requirements & user stories
-│   ├── design.md                  # Technical architecture & design
-│   ├── tasks.md                   # Implementation roadmap
-│   └── README.md                  # This file
-├── src/                           # Source code (coming soon)
-│   ├── components/                # React components
-│   ├── services/                  # Business logic & API integration
-│   ├── types/                     # TypeScript type definitions
-│   └── utils/                     # Helper functions
-├── public/                        # Static assets
-├── tests/                         # Test files
-├── COMMIT_CONVENTIONS.md          # Git commit standards
-└── package.json                   # Dependencies & scripts
-```
-
-## 🎯 Roadmap
+## Roadmap
 
 ### Phase 1: Core MVP (Current)
 - [x] Financial runway calculator
@@ -241,10 +196,10 @@ campus-survival-coach/
 - [ ] Advanced AI personalization
 - [ ] Multi-language support
 
-## 🏆 Recognition & Impact
+## Recognition & Impact
 
 **Target Impact:**
-- Help 1000+ students avoid financial crisis during hackathon period
+- Help students avoid financial crisis during hackathon period
 - Demonstrate innovative approach to student-specific financial tools
 - Showcase cultural context awareness in fintech solutions
 
@@ -252,28 +207,9 @@ campus-survival-coach/
 - Theme: Creating tools that improve student life
 - Focus: Real problems, practical solutions, student-first design
 
-## 📄 License
+ 
 
-This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Build4Students** for creating a platform for student innovation
-- **Google Gemini** for AI capabilities that make contextual tips possible
-- **Student Community** for insights into real financial challenges
-- **Open Source Community** for the amazing tools that make this possible
-
-## 📞 Contact & Demo
-
-<!-- TODO: Update with actual demo link when deployed -->
-
-- **Live Demo**: [Coming Soon - Will be deployed on Vercel]
-- **Repository**: [github.com/owuorviny109/campus-survival-coach](https://github.com/owuorviny109/campus-survival-coach)
-- **Hackathon Submission**: [Build4Students Platform - Link TBD]
-
----
-
-**Built with ❤️ for students, by students**
+**Built with care for students, by students**
 
 *"Because every student deserves to make it to graduation without going broke"*
 
