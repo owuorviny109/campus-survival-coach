@@ -4,7 +4,7 @@ import { z } from 'zod';
 export const IncomeEventSchema = z.object({
     id: z.string().uuid(),
     amount: z.number().positive("Income must be positive"),
-    date: z.date(),
+    date: z.coerce.date(), // Coerce handles ISO string -> Date conversion
     source: z.string().min(1, "Source is required"),
     reliability: z.enum(['certain', 'likely', 'uncertain']),
     isReceived: z.boolean().optional().default(false),
@@ -25,7 +25,7 @@ export type FixedExpense = z.infer<typeof FixedExpenseSchema>;
 export const RunwayResultSchema = z.object({
     daysRemaining: z.number(),
     safeDailySpend: z.number(),
-    brokeDate: z.date(),
+    brokeDate: z.coerce.date(),
     status: z.enum(['good', 'warning', 'critical']),
     projectedBalance: z.array(z.object({
         date: z.string(), // ISO String for UI

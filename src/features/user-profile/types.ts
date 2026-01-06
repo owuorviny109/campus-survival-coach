@@ -33,8 +33,8 @@ export type TransportPattern = z.infer<typeof TransportPatternSchema>;
 export const StudentProfileSchema = z.object({
     id: z.string().uuid(),
     name: z.string().min(1, "Name is required"),
-    createdAt: z.date(),
-    lastUpdated: z.date(),
+    createdAt: z.coerce.date(), // Coerce handles ISO string -> Date conversion
+    lastUpdated: z.coerce.date(),
 
     // Context
     campusType: CampusTypeSchema,
