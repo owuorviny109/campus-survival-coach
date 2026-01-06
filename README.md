@@ -10,7 +10,7 @@
 <!-- TODO: Add demo GIF or screenshot here -->
 ![Campus Survival Coach Demo](https://via.placeholder.com/800x400/4F46E5/FFFFFF?text=Campus+Survival+Coach+Demo+%28Coming+Soon%29)
 
-## The Problem We're Solving
+## The Problem being Solved
 
 Students face a unique financial challenge that generic budgeting apps don't understand:
 
@@ -83,7 +83,7 @@ Unlike traditional budgeting apps, we focus on **student financial survival** wi
 
 **Current Phase**: Implementation (Week 2 of 3)
 
-This project is being built for the [Build4Students Hackathon](https://build4students.com) - creating tools that improve student life.
+This project is being built for the [Build4Students Hackathon](https://www.build4students.com/) - creating tools that improve student life.
 
 ### Implementation Progress
 
@@ -95,7 +95,7 @@ This project is being built for the [Build4Students Hackathon](https://build4stu
 - [ ] Testing & Quality Assurance
 - [ ] Deployment & Documentation
 
-See our detailed [implementation plan](tasks.md) for complete roadmap.
+See our detailed [implementation plan](DOCS/tasks.md) for complete roadmap.
 
 ## Hackathon Alignment
 
