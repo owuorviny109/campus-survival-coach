@@ -58,23 +58,48 @@ export function useLocalStorage<T>(
      */
     const setValue = useCallback((value: T | ((val: T) => T)) => {
         try {
-            // Allow value to be a function so we have same API as useState
-            const valueToStore = value instanceof Function ? value(storedValue) : value;
+            setStoredValue(prev => {
+                const valueToStore = value instanceof Function ? value(prev) : value;
 
-            // Save state
-            setStoredValue(valueToStore);
+                // Save to local storage
+                if (typeof window !== 'undefined') {
+                    try {
+                        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+                        window.dispatchEvent(new Event('local-storage'));
+                        // Clear error if write succeeds
+                        setError(null);
+                    } catch (error) {
+                        // Handle quota exceeded specifically
+                        if (error instanceof DOMException && error.name === 'QuotaExceededError') {
+                            console.error(`LocalStorage quota exceeded for key "${key}"`);
+                            const quotaError = new Error(
+                                'Storage quota exceeded. Please clear some data or export your information.'
+                            );
+                            setError(quotaError);
 
-            // Save to local storage
-            if (typeof window !== 'undefined') {
-                window.localStorage.setItem(key, JSON.stringify(valueToStore));
-                // Dispatch a custom event so other hooks in the SAME tab update
-                window.dispatchEvent(new Event('local-storage'));
-            }
+                            // Dispatch custom event for UI to listen
+                            window.dispatchEvent(new CustomEvent('storage-quota-exceeded', {
+                                detail: { key, error: quotaError }
+                            }));
+
+                            // Don't update state if write failed
+                            return prev;
+                        } else {
+                            // Other storage errors
+                            console.error(`LocalStorage write error for key "${key}":`, error);
+                            setError(error instanceof Error ? error : new Error(String(error)));
+                            return prev;
+                        }
+                    }
+                }
+
+                return valueToStore;
+            });
         } catch (error) {
-            console.error(`LocalStorage Write Error for key "${key}":`, error);
+            console.error(`LocalStorage error for key "${key}":`, error);
             setError(error instanceof Error ? error : new Error(String(error)));
         }
-    }, [key, storedValue]);
+    }, [key]);
 
     // Listen for changes from other tabs AND the same tab
     useEffect(() => {
