@@ -104,6 +104,9 @@ describe('RunwayLogic', () => {
                         category: 'other' as const
                     }));
 
+                    // Usage of safe wrapper would be better here if validation is strict, 
+                    // BUT for now let's leave it as is. 
+                    // Existing ranges seem compatible with validation rules.
                     const result = RunwayLogic.calculateRunway({
                         currentBalance: balance,
                         startDate: new Date(),
@@ -117,7 +120,105 @@ describe('RunwayLogic', () => {
                     expect(result.projectedBalance).toHaveLength(result.daysRemaining);
                 }
             )
-        )
+        );
+    });
+
+    // Input Validation Tests
+    describe('Input Validation', () => {
+        it('Rejects NaN balance', () => {
+            expect(() => {
+                RunwayLogic.calculateRunway({
+                    currentBalance: NaN,
+                    startDate: new Date(),
+                    fixedExpenses: [],
+                    incomeEvents: [],
+                    dailyVariableSpend: 100
+                });
+            }).toThrow('Invalid balance');
+        });
+
+        it('Rejects Infinity balance', () => {
+            expect(() => {
+                RunwayLogic.calculateRunway({
+                    currentBalance: Infinity,
+                    startDate: new Date(),
+                    fixedExpenses: [],
+                    incomeEvents: [],
+                    dailyVariableSpend: 100
+                });
+            }).toThrow('Invalid balance');
+        });
+
+        it('Rejects unrealistically high balance', () => {
+            expect(() => {
+                RunwayLogic.calculateRunway({
+                    currentBalance: 200000000, // 200M
+                    startDate: new Date(),
+                    fixedExpenses: [],
+                    incomeEvents: [],
+                    dailyVariableSpend: 100
+                });
+            }).toThrow('Balance too high');
+        });
+
+        it('Rejects negative daily spend', () => {
+            expect(() => {
+                RunwayLogic.calculateRunway({
+                    currentBalance: 1000,
+                    startDate: new Date(),
+                    fixedExpenses: [],
+                    incomeEvents: [],
+                    dailyVariableSpend: -100
+                });
+            }).toThrow('Daily spend cannot be negative');
+        });
+
+        it('Rejects invalid dueDay (too high)', () => {
+            expect(() => {
+                RunwayLogic.calculateRunway({
+                    currentBalance: 1000,
+                    startDate: new Date(),
+                    fixedExpenses: [{
+                        id: 'test-id',
+                        name: 'Rent',
+                        amount: 500,
+                        dueDay: 55, // Invalid
+                        category: 'housing'
+                    }],
+                    incomeEvents: [],
+                    dailyVariableSpend: 100
+                });
+            }).toThrow('Invalid dueDay');
+        });
+
+        it('Rejects invalid dueDay (zero)', () => {
+            expect(() => {
+                RunwayLogic.calculateRunway({
+                    currentBalance: 1000,
+                    startDate: new Date(),
+                    fixedExpenses: [{
+                        id: 'test-id',
+                        name: 'Rent',
+                        amount: 500,
+                        dueDay: 0,
+                        category: 'housing'
+                    }],
+                    incomeEvents: [],
+                    dailyVariableSpend: 100
+                });
+            }).toThrow('Invalid dueDay');
+        });
+
+        it('Accepts zero daily spend', () => {
+            const result = RunwayLogic.calculateRunway({
+                currentBalance: 1000,
+                startDate: new Date(),
+                fixedExpenses: [],
+                incomeEvents: [],
+                dailyVariableSpend: 0
+            });
+            expect(result.daysRemaining).toBe(365); // Capped at max
+        });
     });
 
 });

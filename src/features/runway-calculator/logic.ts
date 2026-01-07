@@ -3,6 +3,21 @@ import { FixedExpense, IncomeEvent, RunwayResult } from './types';
 
 export class RunwayLogic {
     /**
+     * Safe version of calculateRunway that returns errors instead of throwing
+     */
+    static calculateRunwaySafe(params: Parameters<typeof RunwayLogic.calculateRunway>[0]): { success: true; result: RunwayResult } | { success: false; error: string } {
+        try {
+            const result = RunwayLogic.calculateRunway(params);
+            return { success: true, result };
+        } catch (error) {
+            return {
+                success: false,
+                error: error instanceof Error ? error.message : String(error)
+            };
+        }
+    }
+
+    /**
      * Calculates how long the student survives based on current spending.
      */
     static calculateRunway(params: {
@@ -14,7 +29,58 @@ export class RunwayLogic {
     }): RunwayResult {
         const { currentBalance, startDate, fixedExpenses, incomeEvents, dailyVariableSpend } = params;
 
-        // Safety check
+        // ===== INPUT VALIDATION =====
+
+        // Validate balance
+        if (!Number.isFinite(currentBalance)) {
+            throw new Error(`Invalid balance: must be a finite number, got ${currentBalance}`);
+        }
+        if (currentBalance < -1000000) {
+            throw new Error(`Balance too low: ${currentBalance} (minimum: -1,000,000)`);
+        }
+        if (currentBalance > 100000000) {
+            throw new Error(`Balance too high: ${currentBalance} (maximum: 100,000,000)`);
+        }
+
+        // Validate daily spend
+        if (!Number.isFinite(dailyVariableSpend)) {
+            throw new Error(`Invalid daily spend: must be a finite number, got ${dailyVariableSpend}`);
+        }
+        if (dailyVariableSpend < 0) {
+            throw new Error(`Daily spend cannot be negative: ${dailyVariableSpend}`);
+        }
+        if (dailyVariableSpend > 100000) {
+            throw new Error(`Daily spend unrealistically high: ${dailyVariableSpend} (maximum: 100,000)`);
+        }
+
+        // Validate start date
+        if (!(startDate instanceof Date) || isNaN(startDate.getTime())) {
+            throw new Error(`Invalid start date: ${startDate}`);
+        }
+
+        // Validate fixed expenses
+        for (const expense of fixedExpenses) {
+            if (!Number.isFinite(expense.amount) || expense.amount <= 0) {
+                throw new Error(`Invalid expense amount for "${expense.name}": ${expense.amount}`);
+            }
+            if (!Number.isInteger(expense.dueDay) || expense.dueDay < 1 || expense.dueDay > 31) {
+                throw new Error(`Invalid dueDay for "${expense.name}": ${expense.dueDay} (must be 1-31)`);
+            }
+        }
+
+        // Validate income events
+        for (const income of incomeEvents) {
+            if (!Number.isFinite(income.amount) || income.amount <= 0) {
+                throw new Error(`Invalid income amount for "${income.source}": ${income.amount}`);
+            }
+            if (!(income.date instanceof Date) || isNaN(income.date.getTime())) {
+                throw new Error(`Invalid income date for "${income.source}": ${income.date}`);
+            }
+        }
+
+        // ===== END VALIDATION =====
+
+        // Safety check (redundant but kept for backwards compat logic)
         if (currentBalance < 0) {
             return {
                 daysRemaining: 0,
