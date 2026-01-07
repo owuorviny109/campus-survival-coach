@@ -2,6 +2,7 @@ import { useProfile } from './features/user-profile/ProfileContext';
 import { OnboardingFlow } from './features/user-profile/components';
 import { RunwayDashboard } from './features/runway-calculator/components';
 import { StorageQuotaWarning } from './components/StorageQuotaWarning';
+import { Toaster } from 'sonner';
 
 function App() {
     const { hasProfile } = useProfile();
@@ -9,6 +10,7 @@ function App() {
     if (!hasProfile) {
         return (
             <>
+                <Toaster richColors position="top-center" />
                 <StorageQuotaWarning />
                 <OnboardingFlow />
             </>
@@ -17,6 +19,7 @@ function App() {
 
     return (
         <>
+            <Toaster richColors position="top-center" />
             <StorageQuotaWarning />
             <div className="min-h-screen bg-gray-50 flex flex-col items-center py-10">
                 <div className="max-w-md w-full mx-4 space-y-8">

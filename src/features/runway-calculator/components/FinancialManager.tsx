@@ -8,6 +8,7 @@ import { Select } from '../../../components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
 import { Trash2, Plus, TrendingUp, TrendingDown } from 'lucide-react';
 import { format } from 'date-fns';
+import { toast } from 'sonner';
 
 export function FinancialManager() {
     const { fixedExpenses, incomeEvents, addFixedExpense, removeFixedExpense, addIncomeEvent, removeIncomeEvent } = useFinancials();
@@ -82,6 +83,8 @@ function ExpenseSection({ list, onAdd, onDelete }: {
 
         // Reset after delay to prevent rapid double-submit
         setTimeout(() => setIsSubmitting(false), 300);
+
+        toast.success(`Expense "${name}" added successfully`);
     };
 
     const handleDelete = (item: FixedExpense) => {
@@ -90,6 +93,7 @@ function ExpenseSection({ list, onAdd, onDelete }: {
         );
         if (confirmed) {
             onDelete(item.id);
+            toast.info(`Expense "${item.name}" deleted`);
         }
     };
 
@@ -187,6 +191,8 @@ function IncomeSection({ list, onAdd, onDelete }: {
 
         // Reset after delay to prevent rapid double-submit
         setTimeout(() => setIsSubmitting(false), 300);
+
+        toast.success(`Income from "${source}" added successfully`);
     };
 
     const handleDelete = (item: IncomeEvent) => {
@@ -195,6 +201,7 @@ function IncomeSection({ list, onAdd, onDelete }: {
         );
         if (confirmed) {
             onDelete(item.id);
+            toast.info(`Income from "${item.source}" deleted`);
         }
     };
 

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { useProfile } from '../ProfileContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '../../../components/ui/card';
 import { Button } from '../../../components/ui/button';
@@ -97,12 +98,15 @@ export function OnboardingFlow() {
             };
 
             console.log("Data to create:", profileData);
+
+            toast.success('Profile created! Welcome to your survival coach.');
             createProfile(profileData);
             console.log("Profile created successfully in LocalStorage");
 
             // Should trigger App re-render automatically via useLocalStorage event
         } catch (e) {
             console.error("Error creating profile:", e);
+            toast.error('Failed to create profile. Please try again.');
             setErrors({ name: 'Failed to create profile. Please try again.' });
         }
     };

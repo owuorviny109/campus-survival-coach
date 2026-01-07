@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
 
@@ -33,7 +34,7 @@ export function StorageQuotaWarning() {
             });
 
             setShowWarning(false);
-            alert('Old data cleared. Please try again.');
+            toast.success('Old data cleared. Please try again.');
         }
     };
 
@@ -55,6 +56,7 @@ export function StorageQuotaWarning() {
         a.download = `campus-survival-backup-${new Date().toISOString().split('T')[0]}.json`;
         a.click();
         URL.revokeObjectURL(url);
+        toast.success('Backup file download started');
     };
 
     if (!showWarning) return null;
