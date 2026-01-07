@@ -60,10 +60,13 @@ function ExpenseSection({ list, onAdd, onDelete }: {
     const [name, setName] = useState('');
     const [amount, setAmount] = useState('');
     const [dueDay, setDueDay] = useState('1');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!name || !amount) return;
+        if (!name || !amount || isSubmitting) return;
+
+        setIsSubmitting(true);
 
         onAdd({
             id: crypto.randomUUID(),
@@ -76,6 +79,9 @@ function ExpenseSection({ list, onAdd, onDelete }: {
         setName('');
         setAmount('');
         setDueDay('1');
+
+        // Reset after delay to prevent rapid double-submit
+        setTimeout(() => setIsSubmitting(false), 300);
     };
 
     return (
@@ -100,8 +106,21 @@ function ExpenseSection({ list, onAdd, onDelete }: {
                             ))}
                         </Select>
                     </div>
-                    <Button type="submit" size="sm" className="flex-1">
-                        <Plus size={16} className="mr-1" /> Add Expense
+                    <Button
+                        type="submit"
+                        size="sm"
+                        className="flex-1"
+                        disabled={isSubmitting || !name || !amount}
+                    >
+                        {isSubmitting ? (
+                            <>
+                                <span className="animate-spin mr-1">⏳</span> Adding...
+                            </>
+                        ) : (
+                            <>
+                                <Plus size={16} className="mr-1" /> Add Expense
+                            </>
+                        )}
                     </Button>
                 </div>
             </form>
@@ -137,10 +156,13 @@ function IncomeSection({ list, onAdd, onDelete }: {
         d.setDate(d.getDate() + 1);
         return d.toISOString().split('T')[0];
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!source || !amount) return;
+        if (!source || !amount || isSubmitting) return;
+
+        setIsSubmitting(true);
 
         onAdd({
             id: crypto.randomUUID(),
@@ -153,6 +175,9 @@ function IncomeSection({ list, onAdd, onDelete }: {
 
         setSource('');
         setAmount('');
+
+        // Reset after delay to prevent rapid double-submit
+        setTimeout(() => setIsSubmitting(false), 300);
     };
 
     return (
@@ -173,8 +198,21 @@ function IncomeSection({ list, onAdd, onDelete }: {
                         <Label htmlFor="inc-date">Expected Date</Label>
                         <Input id="inc-date" type="date" value={date} onChange={e => setDate(e.target.value)} />
                     </div>
-                    <Button type="submit" size="sm" className="flex-1">
-                        <Plus size={16} className="mr-1" /> Add Income
+                    <Button
+                        type="submit"
+                        size="sm"
+                        className="flex-1"
+                        disabled={isSubmitting || !source || !amount}
+                    >
+                        {isSubmitting ? (
+                            <>
+                                <span className="animate-spin mr-1">⏳</span> Adding...
+                            </>
+                        ) : (
+                            <>
+                                <Plus size={16} className="mr-1" /> Add Income
+                            </>
+                        )}
                     </Button>
                 </div>
             </form>
