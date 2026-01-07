@@ -84,6 +84,15 @@ function ExpenseSection({ list, onAdd, onDelete }: {
         setTimeout(() => setIsSubmitting(false), 300);
     };
 
+    const handleDelete = (item: FixedExpense) => {
+        const confirmed = confirm(
+            `Delete "${item.name}" (${item.amount} KSh due on day ${item.dueDay})?\n\nThis cannot be undone.`
+        );
+        if (confirmed) {
+            onDelete(item.id);
+        }
+    };
+
     return (
         <div className="space-y-6">
             <form onSubmit={handleSubmit} className="grid gap-4 p-4 bg-slate-50 rounded-lg border border-slate-100">
@@ -133,7 +142,7 @@ function ExpenseSection({ list, onAdd, onDelete }: {
                             <p className="font-medium text-slate-900">{item.name}</p>
                             <p className="text-xs text-slate-500">{item.amount} KSh • Due on {item.dueDay}{getOrdinal(item.dueDay)}</p>
                         </div>
-                        <Button variant="ghost" size="icon" onClick={() => onDelete(item.id)} className="text-red-500 hover:text-red-700 hover:bg-red-50">
+                        <Button variant="ghost" size="icon" onClick={() => handleDelete(item)} className="text-red-500 hover:text-red-700 hover:bg-red-50">
                             <Trash2 size={16} />
                         </Button>
                     </div>
@@ -178,6 +187,15 @@ function IncomeSection({ list, onAdd, onDelete }: {
 
         // Reset after delay to prevent rapid double-submit
         setTimeout(() => setIsSubmitting(false), 300);
+    };
+
+    const handleDelete = (item: IncomeEvent) => {
+        const confirmed = confirm(
+            `Delete income from "${item.source}" (${item.amount} KSh on ${format(new Date(item.date), 'MMM do')})?\n\nThis cannot be undone.`
+        );
+        if (confirmed) {
+            onDelete(item.id);
+        }
     };
 
     return (
@@ -225,7 +243,7 @@ function IncomeSection({ list, onAdd, onDelete }: {
                             <p className="font-medium text-slate-900">{item.source}</p>
                             <p className="text-xs text-slate-500">{item.amount} KSh • {format(new Date(item.date), 'MMM do')}</p>
                         </div>
-                        <Button variant="ghost" size="icon" onClick={() => onDelete(item.id)} className="text-red-500 hover:text-red-700 hover:bg-red-50">
+                        <Button variant="ghost" size="icon" onClick={() => handleDelete(item)} className="text-red-500 hover:text-red-700 hover:bg-red-50">
                             <Trash2 size={16} />
                         </Button>
                     </div>
