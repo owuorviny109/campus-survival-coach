@@ -1,9 +1,9 @@
-import { useStudentProfile } from './features/user-profile/hooks';
+import { useProfile } from './features/user-profile/ProfileContext';
 import { OnboardingFlow } from './features/user-profile/components';
 import { RunwayDashboard } from './features/runway-calculator/components';
 
 function App() {
-    const { hasProfile } = useStudentProfile();
+    const { hasProfile } = useProfile();
 
     if (!hasProfile) {
         return <OnboardingFlow />;
