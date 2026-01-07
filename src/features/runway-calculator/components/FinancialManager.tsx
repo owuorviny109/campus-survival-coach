@@ -6,9 +6,10 @@ import { Input } from '../../../components/ui/input';
 import { Label } from '../../../components/ui/label';
 import { Select } from '../../../components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
-import { Trash2, Plus, TrendingUp, TrendingDown } from 'lucide-react';
+import { Trash2, Plus, TrendingUp, TrendingDown, Wallet, PiggyBank } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
+import { EmptyState } from '../../../components/EmptyState';
 
 export function FinancialManager() {
     const { fixedExpenses, incomeEvents, addFixedExpense, removeFixedExpense, addIncomeEvent, removeIncomeEvent } = useFinancials();
@@ -139,7 +140,13 @@ function ExpenseSection({ list, onAdd, onDelete }: {
             </form>
 
             <div className="space-y-2">
-                {list.length === 0 && <p className="text-center text-slate-400 text-sm py-4">No expenses added yet.</p>}
+                {list.length === 0 && (
+                    <EmptyState
+                        icon={Wallet}
+                        title="No expenses tracked"
+                        description="Add your monthly fixed costs like rent, internet, or subscriptions."
+                    />
+                )}
                 {list.map(item => (
                     <div key={item.id} className="flex justify-between items-center p-3 bg-white border rounded-md shadow-sm">
                         <div>
@@ -243,7 +250,13 @@ function IncomeSection({ list, onAdd, onDelete }: {
             </form>
 
             <div className="space-y-2">
-                {list.length === 0 && <p className="text-center text-slate-400 text-sm py-4">No expected income.</p>}
+                {list.length === 0 && (
+                    <EmptyState
+                        icon={PiggyBank}
+                        title="No income expected"
+                        description="Add expected income sources like allowance, HELB loan, or side hustles."
+                    />
+                )}
                 {list.map(item => (
                     <div key={item.id} className="flex justify-between items-center p-3 bg-white border rounded-md shadow-sm">
                         <div>
